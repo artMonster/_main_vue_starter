@@ -33,17 +33,17 @@ export default {
         }
     },
     created() {
-
-        fb.collection("messages").onSnapshot( querySnapshot => {
-            
-            let list = []
-            
+        let list = []
+        fb.collection("messages").onSnapshot( querySnapshot => {            
             querySnapshot.forEach(doc => {
                 list.push( { id: doc.id, name: doc.data().name } )
             })
-            
             this.list = list
         })
+        
+    },
+    updated() {
+        
     },
     methods: {
         createStep () {

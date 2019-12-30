@@ -1,6 +1,6 @@
 <template>
-    <section class="mb-5">      
-        <ConsoleForm :consoleCommand="consoleCommand" :curentRoom="curentRoom" />
+    <section class="mb-5">
+        <ConsoleForm @res="res" :consoleCommand="consoleCommand" :curentRoom="curentRoom" :state="state" />
         <div class="container chat">
             <div class="row align-content-center justify-content-center">
                 <div class="col-12 py-4">
@@ -51,28 +51,18 @@ export default {
             state: [],
             consoleCommand: [],
             curentRoom: false,
+            toastCount: 0,
         }
     },
-    created() {
-        let obj = {
-                type: "Choose type...",
-                message: null,
-                playername: this.playername,
-                curentRoom: this.curentRoom,
-                playerid: this.playerid,
-            }
-        this.consoleCommand = obj
+    created: function () {
+        this.state = {
+            playername: this.playername,
+            playerid: this.playerid,
+        }
+
     },
-    update() {
-        
-        let obj = {
-                type: "Choose type...",
-                message: null,
-                playername: this.playername,
-                curentRoom: this.curentRoom,
-                playerid: this.playerid,
-            }
-        this.consoleCommand = obj
+    updated() {
+
     },
     methods: {
         textMessage(message) {
@@ -92,6 +82,16 @@ export default {
         },
         stepInBoard(boardObj) {
             this.consoleCommand = boardObj
+        },
+        res(e) {
+            this.toastCount = e
+            this.$bvToast.toast(`Resp: ${e.message} <br> ${e.playername} `, {
+                title: e.id + ' / Message',
+                autoHideDelay: 5000,
+                toaster: 'b-toaster-bottom-right',
+                appendToast: false,
+                variant: 'danger'
+            })
         }
     }
 }

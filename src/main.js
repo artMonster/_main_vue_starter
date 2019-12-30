@@ -4,14 +4,18 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import VueChatScroll from 'vue-chat-scroll'
+import BootstrapVue from 'bootstrap-vue'
 import app from './app'
 import router from './routes'
 import errorPage from './components/ErrorPage'
 import store from './store/index.js'
 
+
+
 Vue.config.productionTip = false;
 
 Vue.use(VueRouter)
+Vue.use(BootstrapVue)
 Vue.use(VueChatScroll)
 
 Vue.component('error-page', errorPage)

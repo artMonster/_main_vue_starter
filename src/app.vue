@@ -13,5 +13,7 @@ export default {
 </script>
 
 <style lang="sass">
+    @import 'node_modules/bootstrap/scss/bootstrap'
+    @import 'node_modules/bootstrap-vue/src/index.scss'
     @import "./assets/style/main.sass"
 </style>

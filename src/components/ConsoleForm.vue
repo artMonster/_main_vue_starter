@@ -5,7 +5,7 @@
                 <form @submit.prevent="createCommand" class="form-inline">
                     <div class="col-md-3">
                         <label class="mr-sm-2 sr-only" for="inlineFormCustomSelect">Preference</label>
-                        <select id="inputState" class="form-control w-100" v-model="consoleCommand.type">
+                        <select id="inputState" class="form-control w-100" v-model="type">
                             <option selected>Choose type...</option>
                             <option value="am">new Message</option>
                             <option value="amr">new Message in Room</option>
@@ -38,84 +38,95 @@ import fb from '@/firebase/init';
 
 export default {
     name: 'ConsoleForm',
-    props: ["consoleCommand" ,"curentRoom"],
+    props: ["consoleCommand" ,"curentRoom", "state"],
     data() {
         return {
             name: '//',
             resp: null,
-            errorText: null
+            errorText: null,
+            message: null,
+            type: null,
         }
     },
     methods: {
         consoleKey (e) {
-            this.consoleCommand.message =  e.target.value
+            this.message =  e.target.value
         },
         logOut () {
+            this.$emit("res", {logout: localStorage.playername})
             localStorage.clear()
             this.$router.push({name: 'Login'})
         },
         createCommand (e) {
             //console.log(e)
             //console.log(this)
-            if (this.consoleCommand.message) {
+            if (this.message) {
             } else {
-                console.log("Invalid command: " + this.consoleCommand.message)
+                console.log("Invalid command: " + this.message)
             }
 
-            if (this.consoleCommand.type) {
+            if (this.type) {
             
             } else {
-                console.log("Invalid command: " + this.consoleCommand.type)
+                console.log("Invalid command: " + this.type)
             }
 
-            if (this.consoleCommand.playername) {
+            if (this.state.playername) {
             } else {
-                console.log("Invalid command: " + this.consoleCommand.playername)
+                console.log("Invalid command: " + this.state.playername)
             }
             if (this.curentRoom) {
             } else {
                 console.log("Invalid command: " + this.curentRoom)
             }
 
-            switch(this.consoleCommand.type) {
+            switch(this.type) {
                 case "ap": { // ap = Add Player to room
-                    console.log("Add Player to room: " + this.consoleCommand.message)
+                    console.log("Add Player to room: " + this.message)
                     break
                 }
                 case "ar": { // ar = Add new Room (in: true)
-                    console.log("Add new Room: " + this.consoleCommand.message)
+                    console.log("Add new Room: " + this.message)
                     this.ar()
                     break
                 }
                 case "as": { // as = Add next Step (in:)
-                    console.log("Add next Step: " + this.consoleCommand.message)
+                    console.log("Add next Step: " + this.message)
                     this.as()
                     break
                 }
                 case "am": { // am = Add new Message (in:)
-                    console.log("Add new Message: " + this.consoleCommand.message)
+                    console.log("Add new Message: " + this.message)
                     this.am()
                     break
                 }
                 case "amr": { // arm = Add new Message in Room  (in:)
-                    console.log("Add new Message: " + this.consoleCommand.message)
+                    console.log("Add new Message: " + this.message)
                     this.amr()
                     break
                 }
                 default: {
-                    console.log("Message: " + this.consoleCommand.message + " type: " + this.consoleCommand.type)
+                    this.$emit("res", {message: this.message, type: this.type})
+                    console.log("Message: " + this.message + " type: " + this.type)
                     break
-                } 
+                }
             }
         },
         am () {
-            if (this.consoleCommand.message) { 
+            if (this.message) {
                 fb.collection('messages').add({
-                    message: this.consoleCommand.message,
-                    playername: this.consoleCommand.playername,
+                    message: this.message,
+                    playername: this.state.playername,
                     timestamp: Date.now()
                 }).then( call => {
-                    console.log(call);
+                    let resp = {
+                        id: call.id,
+                        path: call.path,
+                        message: this.message,
+                        playername: this.state.playername,
+                    }
+                    this.$emit("res", resp)
+                    //console.log(call);
                 }).catch(err => {
                     console.log(err);
                 });
@@ -124,13 +135,14 @@ export default {
             }
         },
         amr () {
-            if (this.curentRoom && this.consoleCommand.message) { 
+            if (this.curentRoom && this.message) { 
                 fb.collection('rooms').doc(this.curentRoom).collection('messages').add({
-                    message: this.consoleCommand.message,
-                    playername: this.consoleCommand.playername,
+                    message: this.message,
+                    playername: this.state.playername,
                     timestamp: Date.now()
                 }).then( call => {
-                    console.log(call);
+                    this.$emit("res", call)
+                    //console.log(call);
                 }).catch(err => {
                     console.log(err);
                 });
@@ -139,12 +151,13 @@ export default {
             }
         },
         ar () {
-            if (this.consoleCommand.message) {
+            if (this.message) {
                 fb.collection('rooms').add({
                     isopen: true,
                     timestamp: Date.now(),
                 }).then( call => {
-                    console.log(call)
+                    this.$emit("res", call)
+                    //console.log(call)
                     //this.resp = call.id
                 }).catch(err => {
                     console.log(err)
@@ -158,7 +171,7 @@ export default {
             if (this.consoleCommand.command) {
                 fb.collection('messages').add({
                     type: "//",
-                    message: this.consoleCommand.message,
+                    message: this.message,
                     playername: this.consoleCommand.data.playername,
                     timestamp: Date.now()
                 }).catch(err => {

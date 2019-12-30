@@ -62,29 +62,8 @@ export default {
             errorText: null
         }
     },
+    /*
     created() {
-        let ref = fb.collection('messages')
-        
-        ref.onSnapshot( querySnapshot => {
-            
-            let list = []
-            
-            querySnapshot.forEach(doc => {
-                list.push({ 
-                    id: doc.id,
-                    playername: doc.data().playername,
-                    message: doc.data().message,
-                    timestamp: {
-                        time: moment(doc.data().timestamp).locale('uk').format('LTS'),
-                        calendar: moment(doc.data().timestamp).locale('uk').format('LL'),
-                    }
-                })
-            })
-            this.list = list
-        })
-    },
-    update() {
-
         console.log(this.curentRoom)
 
         let ref = fb.collection('messages')
@@ -92,7 +71,7 @@ export default {
         if (this.curentRoom) {
             ref = fb.collection('rooms').doc(this.curentRoom).collection('messages')
         }
-        
+
         ref.onSnapshot( querySnapshot => {
             
             let list = []
@@ -110,8 +89,13 @@ export default {
             })
             this.list = list
         })
+        
 
+    },updated() {
+        
+        
     },
+    */
     methods: {
         createMessage () {
             
