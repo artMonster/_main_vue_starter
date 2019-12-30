@@ -1,0 +1,50 @@
+@import "style"
+@import "media"
+
+.scrollbox
+	max-height: 300px
+	overflow: auto
+.scrollbox2
+	max-height: 370px
+	overflow: auto
+.vue-circular-progress .circle__progress--fill
+	transition: stroke-dashoffset var(--transitionDuration) ease-out !important
+.r1 input.r1+label,
+.r2 input.r2+label,
+.r3 input.r3+label,
+.c3 input.c3+label,
+.c2 input.c2+label,
+.c1 input.c1+label,
+.u1 input.u1+label,
+.u2 input.u2+label
+	animation: cssload-rotate-one 3s 1s ease-out infinite
+	border-bottom: 6px solid $primary
+.custom-control-label::before,
+.custom-control-label::after
+	width: 2rem
+	height: 2rem
+.custom-control-label::before,
+.custom-control-label::after
+	left: -1rem
+.custom-control-input
+	width: 100%
+	height: 100%
+dd, dt
+	margin: 0 !important
+dt
+	opacity: .5
+.custom-control
+	padding: 0 !important
+	min-height: 2rem
+@keyframes cssload-rotate-one
+	0%
+		transform: translateY(0%)
+
+	20%
+		transform: translateY(140%)
+	25%
+		transform: translateY(100%)
+	60%
+		transform: translateY(0%)
+	100%
+		transform: translateY(0%)
