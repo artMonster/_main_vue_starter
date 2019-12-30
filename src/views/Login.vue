@@ -1,18 +1,28 @@
 <template>
-    <div class="container">
-        <div class="card login">
-            <div class="card-body">
-                <h2 class="card-title text-center">Login</h2>
-                <form @submit.prevent="login" class="text-center" >
-                    <div class="form-group">
-                        <input type="text" class="form-control" placeholder="Please enter your name ..." name="name" v-model="playername">
-                        <p v-if="errorText" class="text-danger">{{ errorText }}</p>
+    <section class="login">
+        <div class="container">
+            <div class="row vh-100 align-content-center justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="card login">
+                        <div class="card-header">
+                            <h2 class="card-title text-center">Please introduce yourself</h2>
+                        </div>
+                        <div class="card-body">
+                            <form @submit.prevent="login" class="text-center" >
+                                <div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Please enter your name ..." name="name">
+                                    <p v-if="errorText" class="text-danger">{{ errorText }}</p>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Start Game</button>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary" >Enter Chat</button>
-                </form>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 </template>
 
 <script>
@@ -41,34 +51,10 @@ export default {
     methods: {
         login() {
             if (this.playername) {
-                this.ap()
             } else {
                 this.errorText = "Please enter a name first!"
             }
         },
-        ap() {
-            fb.collection('freeplayers').add({
-                    playername: this.playername,
-                    timestamp: Date.now()
-                }).then( call => {
-                    console.log("login.ap" + call)
-                    localStorage.playername = this.playername
-                    localStorage.playerid = call.id
-                    this.$router.push({name: 'game', params: {playername: this.playername, playerid: call.id }})
-                }).catch(err => {
-                    console.log("login.ap" + err)
-                })
-        }
     }
 }
 </script>
-
-<style>
-.login{
-    max-width: 450px;
-    margin-top: 50px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-</style>
