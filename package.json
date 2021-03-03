@@ -13,7 +13,7 @@
   "dependencies": {
     "bootstrap": "^4.4.1",
     "easy-circular-progress": "^1.0.4",
-    "pug": "^2.0.0-rc.4",
+    "pug": "^3.0.1",
     "vue": "^2.5.2",
     "vue-motion": "^0.2.3",
     "vue-router": "^3.0.6",
